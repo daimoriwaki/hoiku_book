@@ -42,7 +42,7 @@ ggplot(df, aes(x = 年度)) +
   # Data labels for 就学前人口 (in 万人)
   geom_text(aes(y = 就学前人口,
                 label = paste0(round(就学前人口 / 1e4), "万人")),
-            vjust = -0.5, color = "black", size = 3.5, family = "HiraKakuPro-W3") +
+            vjust = -1, color = "black", size = 3.5, family = "HiraKakuPro-W3") +
   
   # Bars for 待機児童 (scaled)
   geom_col(aes(y = 待機児童 * scale_factor), fill = "gray", alpha = 0.7, width = 0.5) +
@@ -50,7 +50,7 @@ ggplot(df, aes(x = 年度)) +
   # Data labels for 待機児童 (in 千人)
   geom_text(aes(y = 待機児童 * scale_factor,
                 label = paste0(round(待機児童 / 1000, 1), "千人")),
-            vjust = -0.5, color = "gray30", size = 3.5, family = "HiraKakuPro-W3") +
+            vjust = -1, color = "gray30", size = 3.5, family = "HiraKakuPro-W3") +
   
   scale_x_continuous(breaks = c(2010, 2015, 2020, 2024)) +
   # Primary and secondary axes
