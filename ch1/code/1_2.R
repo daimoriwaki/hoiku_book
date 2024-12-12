@@ -41,7 +41,7 @@ ggplot(df, aes(x = 年度)) +
   # Data labels for 利用定員数 in 万人
   geom_text(
     aes(y = 利用定員数, label = paste0(round(利用定員数 / 1e4), "万人")),
-    vjust = -3, color = "black", size = 3.5, family = "HiraKakuPro-W3",
+    vjust = -4, color = "black", size = 3.5, family = "HiraKakuPro-W3",
     position = position_nudge(x = -1)
   ) +
   
@@ -64,7 +64,7 @@ ggplot(df, aes(x = 年度)) +
   
   # Ensure all years, including the last, appear on the x-axis
   scale_x_continuous(breaks = seq(min(df$年度), max(df$年度), by = 1)) +
-  
+  scale_x_continuous(breaks = c(2010, 2015, 2020, 2024)) +
   labs(
     title = "利用定員数と利用人数の推移",
     x = "年度"
@@ -81,17 +81,17 @@ ggplot(df, aes(x = 年度)) +
     df_last <- tail(df, 1)
     list(
       annotate("text",
-               x = df_last$年度 - 2, y = df_last$利用定員数 - 1e6,
+               x = df_last$年度 - 1, y = df_last$利用定員数 - 1e6,
                label = "利用定員数",
                color = "black", size = 4, hjust = 2.7, family = "HiraKakuPro-W3"),
       
       annotate("text",
-               x = df_last$年度, y = df_last$利用人数 - 1e6,
+               x = df_last$年度 + 1, y = df_last$利用人数 - 1e6,
                label = "利用人数",
                color = "gray30", size = 4, hjust = 2.1, family = "HiraKakuPro-W3")
     )
   }
 
 
-ggsave(file.path(figure_path, "1-2.png"), width = 8, height = 6, dpi = 300)
+ggsave(file.path(figure_path, "1_2.png"), width = 8, height = 6, dpi = 300)
 
