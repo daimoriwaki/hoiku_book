@@ -1,8 +1,14 @@
 # Load the necessary libraries
 library(ggplot2)
+library(rstudioapi)
 
-# Load the data
-data <- read.csv("~/Downloads/保育書籍用データ - 10月時点人数.csv", 
+script_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
+
+# Set the working directory to the script's directory
+setwd(script_dir)
+
+# Load the CSV file using the relative path
+data <- read.csv("../data/2_1.csv", 
                  header = TRUE, fileEncoding = "UTF-8")
 
 data <- subset(data, 年 == "2020")
