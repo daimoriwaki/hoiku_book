@@ -4,11 +4,14 @@ library(data.table)
 library(dplyr)
 library(ggplot2)
 
-df <- fread("~/Downloads/0-3章保育書籍用データ - 保育士賃金.csv", data.table = F)
+script_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
 
-df %>% head()
+# Set the working directory to the script's directory
+setwd(script_dir)
 
-colnames(df)
+
+df <- fread("../data/1_5.csv", data.table = F, header = T)
+
 library(ggpattern)
 
 # Create bar plot
