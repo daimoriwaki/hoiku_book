@@ -3,9 +3,9 @@ library(ggplot2)
 library(scales) # comma関数を使用するために必要
 
 
-
-data_path <- "/Users/a14880/dev/hoiku_book/ch1/data"
-figure_path <- "/Users/a14880/dev/hoiku_book/ch1/figure"
+# ローデータのあるディレクトリ（相対パス）
+data_path <- "./ch1/data"
+figure_path <- "../ch1/figure"
 
 df <- read.table(file = file.path(data_path, "0-3章保育書籍用データ - 図1-1, 図1-2.csv"),
                    header = TRUE, sep = ",", quote = "\"")
@@ -63,11 +63,12 @@ ggplot(df, aes(x = 年度)) +
   # Remove legends
   theme_minimal(base_family = "HiraKakuPro-W3") +
   theme(
+    panel.background = element_rect(fill = "white", color = NA),  # 背景を白に
+    plot.background  = element_rect(fill = "white", color = NA),  # プロット領域外も白に
     axis.title.y.left = element_text(color = "black"),
     axis.title.y.right = element_text(color = "gray"),
     legend.position = "none"
   ) +
-  
   # Add title and x-axis label
   labs(
     title = "就学前人口と待機児童の推移",

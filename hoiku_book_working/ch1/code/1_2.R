@@ -4,8 +4,9 @@ library(scales) # comma関数を使用するために必要
 
 
 
-data_path <- "/Users/a14880/dev/hoiku_book/ch1/data"
-figure_path <- "/Users/a14880/dev/hoiku_book/ch1/figure"
+# ローデータのあるディレクトリ（相対パス）
+data_path <- "./ch1/data"
+figure_path <- "../ch1/figure"
 
 df <- read.table(file = file.path(data_path, "0-3章保育書籍用データ - 図1-1, 図1-2.csv"),
                  header = TRUE, sep = ",", quote = "\"")
