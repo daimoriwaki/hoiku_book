@@ -4,7 +4,7 @@ library(scales) # comma関数を使用するために必要
 
 
 
-# ローデータのあるディレクトリ（相対パス）
+# ローデータのあるディレクトリ（Rprojetのあるディレクトリからの相対パス）
 data_path <- "./ch1/data"
 figure_path <- "../ch1/figure"
 
@@ -24,9 +24,6 @@ df$`利用定員数` <- as.numeric(df$`利用定員数`)
 df$`利用人数` <- as.numeric(df$`利用人数`)
 df$`待機児童` <- as.numeric(df$`待機児童`)
 
-
-library(ggplot2)
-library(scales)
 
 # Assuming df already has 年度, 利用定員数, 利用人数 columns as numeric
 # and that both are of a similar range and can be displayed together.

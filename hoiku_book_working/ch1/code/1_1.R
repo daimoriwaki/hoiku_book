@@ -3,7 +3,7 @@ library(ggplot2)
 library(scales) # comma関数を使用するために必要
 
 
-# ローデータのあるディレクトリ（相対パス）
+# ローデータのあるディレクトリ（Rprojetのあるディレクトリからの相対パス）
 data_path <- "./ch1/data"
 figure_path <- "../ch1/figure"
 
