@@ -65,7 +65,7 @@ filtered_data <- df %>%
   filter(職種 %in% c("保育士", "専門的・技術的職業従事者"))
 
 # Sort prefectures by 推定年収 of 保育士
-filtered_data <- filtered_data %>%
+filtered_data <- filtered_data %>% mutate(推定年収 = 推定年収/10) %>% 
   mutate(都道府県 = factor(都道府県, 
                        levels = filtered_data %>%
                          filter(職種 == "保育士") %>%
@@ -80,7 +80,7 @@ ggplot(filtered_data, aes(x = 職種, y = 推定年収, fill = 都道府県)) +
   ) +
   scale_fill_brewer(palette = "Set3") +  # Use a color palette for prefectures
   geom_text(
-    aes(label = paste0(都道府県, "\n", round(推定年収/10))),  # Add prefecture label and 推定年収
+    aes(label = paste0(都道府県, "\n", round(推定年収))),  # Add prefecture label and 推定年収
     position = position_dodge(width = 0.9),
     vjust = -0.5,  # Adjust vertical position of labels
     size = 3,       # Set label size,
@@ -95,7 +95,7 @@ ggplot(filtered_data, aes(x = 職種, y = 推定年収, fill = 都道府県)) +
     legend.position = "none",  # Remove legend
     panel.grid.major.x = element_blank()  # Remove vertical grid lines for clarity
   ) +
-  ylim(c(0, 6000))  # Set y-axis limits
+  ylim(c(0, 600))  # Set y-axis limits
 
 
 ggsave("~/dev/hoiku_book/ch1/figure/1_5.png", width = 8, height = 6, dpi = 300)
