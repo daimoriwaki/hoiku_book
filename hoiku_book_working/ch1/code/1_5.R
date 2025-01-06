@@ -12,14 +12,17 @@ colnames(df)
 library(ggpattern)
 
 # Create bar plot
-df %>% filter(職種 == "保育士" | 職種 == "専門的・技術的職業従事者") %>% ggplot(aes(x = 職種, y = 推定年収, fill = 職種, pattern = 都道府県)) +
+df %>% 
+  filter(職種 == "保育士" | 職種 == "専門的・技術的職業従事者") %>% 
+  ggplot(aes(x = 職種, y = 推定年収, fill = 職種, pattern = 都道府県)) +
   geom_bar_pattern(
     stat = "identity",
     position = "dodge",
     pattern_fill = "white",
     pattern_spacing = 0.1
   ) +
-  scale_fill_grey(start = 0.4, end = 0.8) + # Use grayscale for fill
+  scale_fill_grey(start = 0.4, 
+                  end = 0.8) + # Use grayscale for fill
   labs(
     title = "推定年収比較: 職種と都道府県別",
     x = "職種",

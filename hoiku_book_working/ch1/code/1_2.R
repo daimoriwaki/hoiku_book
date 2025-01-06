@@ -11,6 +11,7 @@ figure_path <- "../ch1/figure"
 df <- read.table(file = file.path(data_path, "0-3章保育書籍用データ - 図1-1, 図1-2.csv"),
                  header = TRUE, sep = ",", quote = "\"")
 
+
 # remove , from the data for 就学前人口 利用定員数  利用人数 待機児童
 colnames(df)[1] <- "年度"
 
@@ -34,12 +35,18 @@ library(scales)
 
 ggplot(df, aes(x = 年度)) +
   # Bars for 利用定員数 (shift to the left)
-  geom_col(aes(y = 利用定員数), fill = "black", width = 0.8,
+  geom_col(aes(y = 利用定員数),
+           fill = "black", 
+           width = 0.8,
            position = position_nudge(x = -0.8)) +
   # Data labels for 利用定員数 in 万人
   geom_text(
-    aes(y = 利用定員数, label = paste0(round(利用定員数 / 1e4), "万人")),
-    vjust = -4, color = "black", size = 3.5, family = "HiraKakuPro-W3",
+    aes(y = 利用定員数, 
+        label = paste0(round(利用定員数 / 1e4), "万人")),
+    vjust = -4, 
+    color = "black",
+    size = 3.5, 
+    family = "HiraKakuPro-W3",
     position = position_nudge(x = -1)
   ) +
   
