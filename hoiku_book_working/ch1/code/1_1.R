@@ -87,5 +87,49 @@ ggplot(df, aes(x = 年度)) +
            label = "待機児童", 
            color = "gray30", size = 4, hjust = 3,family = "HiraKakuPro-W3")
 
-
 ggsave(file.path(figure_path, "1-1.png"), width = 8, height = 6, dpi = 300)
+
+
+# 尾崎作図調整----------------------
+ggplot(df, aes(x = 年度)) +
+  # Line for 就学前人口
+  geom_line(aes(y = 就学前人口), color = "black", size = 1.5) +
+  
+  # Data labels for 就学前人口 (in 万人)
+  geom_text(aes(y = 就学前人口,
+            label = paste0(round(就学前人口 / 1e4), "万人")),
+            vjust = -1.35, color = "black", size = 4.3, 
+            family = "HiraKakuPro-W3") +
+  
+  # Bars for 待機児童 (scaled)
+  geom_col(aes(y = 待機児童 * scale_factor), fill = "gray", 
+           alpha = 0.7, width = 1.0) +
+  
+  # Data labels for 待機児童 (in 千人)
+  geom_text(aes(y = 待機児童 * scale_factor,
+                label = paste0(round(待機児童 / 1000, 1), "千人")),
+            vjust = -1.1, color = "gray30", size = 4.4, family = "HiraKakuPro-W3") +
+  
+  scale_x_continuous(breaks = c(2010, 2015, 2020, 2024)) +
+  # Primary and secondary axes
+  scale_y_continuous(
+    name = "就学前人口", 
+    labels = function(x) paste0(round(x / 1e4), "万人"),
+    sec.axis = sec_axis(~ . / scale_factor, name = "待機児童", 
+                        labels = scales::comma)
+  ) +
+  # Remove legends
+  theme_minimal(base_family = "HiraKakuPro-W3") +
+  theme(
+    panel.background = element_rect(fill = "white", color = NA),  # 背景を白に
+    plot.background  = element_rect(fill = "white", color = NA),  # プロット領域外も白に
+    axis.title.y.left = element_text(color = "black",size = 14),
+    axis.title.y.right = element_text(color = "gray",size = 14),
+    axis.text.x = element_text(size = 12),
+    axis.text.y = element_text(size = 12),
+    axis.title.x = element_text(size = 14),
+    legend.position = "none"
+  ) +
+  # Add title and x-axis label
+  labs(x = "年度")
+
