@@ -133,3 +133,4 @@ ggplot(df, aes(x = 年度)) +
   # Add title and x-axis label
   labs(x = "年度")
 
+ggsave(file.path(figure_path, "1-1.png"), width = 8, height = 6, dpi = 300)
