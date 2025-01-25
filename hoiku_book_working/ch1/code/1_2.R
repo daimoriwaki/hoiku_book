@@ -4,12 +4,14 @@ library(scales) # comma関数を使用するために必要
 
 
 
-# ローデータのあるディレクトリ（Rprojetのあるディレクトリからの相対パス）
-data_path <- "./ch1/data"
-figure_path <- "./ch1/figure"
+script_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
 
-df <- read.table(file = file.path(data_path, "0-3章保育書籍用データ - 図1-1, 図1-2.csv"),
-                 header = TRUE, sep = ",", quote = "\"")
+# Set the working directory to the script's directory
+setwd(script_dir)
+
+
+df <- fread("../data/0-3章保育書籍用データ - 図1-1, 図1-2.csv", data.table = F, header = T)
+
 
 
 # remove , from the data for 就学前人口 利用定員数  利用人数 待機児童
@@ -26,29 +28,24 @@ df$`利用人数` <- as.numeric(df$`利用人数`)
 df$`待機児童` <- as.numeric(df$`待機児童`)
 
 
+library(ggplot2)
+library(scales)
+
 # Assuming df already has 年度, 利用定員数, 利用人数 columns as numeric
 # and that both are of a similar range and can be displayed together.
 library(ggplot2)
 library(scales)
 
-
 # Assuming df already has 年度, 利用定員数, 利用人数 as numeric and on a similar scale.
 
 ggplot(df, aes(x = 年度)) +
   # Bars for 利用定員数 (shift to the left)
-  geom_col(aes(y = 利用定員数),
-           fill = "black", 
-           width = 0.8,
+  geom_col(aes(y = 利用定員数), fill = "black", width = 0.8,
            position = position_nudge(x = -0.8)) +
-  
   # Data labels for 利用定員数 in 万人
   geom_text(
-    aes(y = 利用定員数, 
-        label = paste0(round(利用定員数 / 1e4), "万人")),
-    vjust = -4, 
-    color = "black",
-    size = 3.5, 
-    family = "HiraKakuPro-W3",
+    aes(y = 利用定員数, label = paste0(round(利用定員数 / 1e4), "万人")),
+    vjust = -4, color = "black", size = 3.5, family = "HiraKakuPro-W3",
     position = position_nudge(x = -1)
   ) +
   
@@ -57,12 +54,8 @@ ggplot(df, aes(x = 年度)) +
            position = position_nudge(x = 0.2)) +
   # Data labels for 利用人数 in 万人
   geom_text(
-    aes(y = 利用人数, 
-        label = paste0(round(利用人数 / 1e4), "万人")),
-    vjust = -3, 
-    color = "black",
-    size = 3.5, 
-    family = "HiraKakuPro-W3",
+    aes(y = 利用人数, label = paste0(round(利用人数 / 1e4), "万人")),
+    vjust = -3, color = "black", size = 3.5, family = "HiraKakuPro-W3",
     position = position_nudge(x = 0.4)
   ) +
   
@@ -92,27 +85,19 @@ ggplot(df, aes(x = 年度)) +
     df_last <- tail(df, 1)
     list(
       annotate("text",
-               x = df_last$年度 - 1, 
-               y = df_last$利用定員数 - 1e6,
+               x = df_last$年度 - 1, y = df_last$利用定員数 - 1e6,
                label = "利用定員数",
-               color = "black", 
-               size = 4, 
-               hjust = 2.7, 
-               family = "HiraKakuPro-W3"),
+               color = "black", size = 4, hjust = 2.7, family = "HiraKakuPro-W3"),
       
       annotate("text",
-               x = df_last$年度 + 1,
-               y = df_last$利用人数 - 1e6,
+               x = df_last$年度 + 1, y = df_last$利用人数 - 1e6,
                label = "利用人数",
-               color = "gray30", 
-               size = 4, 
-               hjust = 2.1, 
-               family = "HiraKakuPro-W3")
+               color = "gray30", size = 4, hjust = 2.1, family = "HiraKakuPro-W3")
     )
   }
 
 
-ggsave(file.path(figure_path, "1_2.png"), width = 8, height = 6, dpi = 300)
+ggsave( "../figure/1_2.png", width = 8, height = 6, dpi = 300)
 
 
 

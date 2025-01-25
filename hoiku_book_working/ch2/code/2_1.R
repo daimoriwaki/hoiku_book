@@ -27,9 +27,15 @@ total_data <- aggregate(人数 ~ 月 + 年, data, sum)
 # Add midpoint for horizontal placement
 total_data$horizontal_midpoint <- mean(range(data$月)) # Center of the x-axis
 
+
+
+## 尾崎調整---------
+
 # Create the area plot with horizontal lines and centrally positioned data labels
 ggplot(data, aes(x = 月, y = 人数 / 10000, fill = 年齢, group = 年齢)) +
-  geom_area(alpha = 0.8, position = "stack") + # Stacked area plot
+#  geom_area(alpha = 0.8, position = "stack") + # Stacked area plot
+  geom_area(alpha = 0.8, position = "stack", 
+            color = "white", size = 0.03 / 2.54 * 72) + # 白線の境界を追加
   geom_hline(
     data = subset(total_data, 月 %in% c(4, 10)), # Add horizontal lines for total values
     aes(yintercept = 人数 / 10000), 
@@ -50,7 +56,8 @@ ggplot(data, aes(x = 月, y = 人数 / 10000, fill = 年齢, group = 年齢)) +
   ) +
   theme_minimal(base_family = "HiraKakuPro-W3") +
   theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5, family = "HiraKakuProN-W3"),
+    axis.text.x = element_text(size = 14, angle = 0, hjust = 0.5, family = "HiraKakuProN-W3"),
+    axis.text.y = element_text(size = 13, family = "HiraKakuProN-W3"),
     strip.text = element_text(size = 10), # Adjust facet labels for better visibility
     plot.margin = margin(20, 20, 20, 20) # Add consistent padding around the plot
   ) +
@@ -58,7 +65,10 @@ ggplot(data, aes(x = 月, y = 人数 / 10000, fill = 年齢, group = 年齢)) +
     breaks = c(4, 10), # Only show April and October on the x-axis
     labels = c("4月", "10月")
   ) +
-  scale_fill_brewer(palette = "Set2") + # Color differences for 年齢 groups
+#  scale_fill_brewer(palette = "Set2") + # Color differences for 年齢 groups
+  scale_fill_manual(
+    values = c("3歳児以上" = "gray20", "3歳児未満" = "gray80") # グレーを指定
+    ) + 
   labs(
     title = "", 
     x = "",
