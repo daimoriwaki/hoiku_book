@@ -9,14 +9,13 @@ script_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
 setwd(script_dir)
 
 # Load the CSV file using the relative path
-data <- read.csv("../data/pdf_pages_v2.csv")
-
-
+#data <- read.csv("../data/pdf_pages_v2.csv")
+data <- read.csv("../data/pdf_pages_summary_redo20250131.csv")
 # remove page == NA and page == 0
 
-data <- data[!is.na(data$page),]
+data <- data[!is.na(data$pages),]
+data <- data[data$pages > 0 & data$mean_nchar > 50,]
 
-data <- data[data$page > 0,]
 
 # distribution of pages 0-10, 10-20, 20-40, 40-60, 60-100, 100-
 
@@ -59,7 +58,8 @@ pie_chart <- ggplot(page_count_df, aes(x = "", y = Count, fill = Page_Range)) +
   coord_polar("y", start = 0) +
   theme_void() +
   theme(legend.position = "bottom") +
-  scale_fill_brewer(palette = "Set3") +
+  #scale_fill_brewer(palette = "Set3") +
+  scale_fill_grey() +
   ggtitle("ページ数の分布")
 
 

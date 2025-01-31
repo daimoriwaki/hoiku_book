@@ -60,6 +60,7 @@ pie_chart <- ggplot(page_count_df, aes(x = "", y = Count, fill = Page_Range)) +
   # geom_text(aes(x = 1.5, y = Label_Position, label = Label), color = "white") +
   # theme(legend.position = "bottom") +
   # labs(title = "文字数の分布", fill = "文字数") +
+  scale_fill_grey() +
   theme(plot.title = element_text(hjust = 0.5)
   )
 
