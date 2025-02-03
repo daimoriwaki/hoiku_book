@@ -9,14 +9,13 @@ script_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
 setwd(script_dir)
 
 # Load the CSV file using the relative path
-data <- read.csv("../data/pdf_pages_v2.csv")
-
-
+#data <- read.csv("../data/pdf_pages_v2.csv")
+data <- read.csv("../data/pdf_pages_summary_redo20250131.csv")
 # remove page == NA and page == 0
 
-data <- data[!is.na(data$page),]
+data <- data[!is.na(data$pages),]
+data <- data[data$pages > 0 & data$mean_nchar > 50,]
 
-data <- data[data$page > 0,]
 
 # distribution of pages 0-10, 10-20, 20-40, 40-60, 60-100, 100-
 
@@ -59,10 +58,30 @@ pie_chart <- ggplot(page_count_df, aes(x = "", y = Count, fill = Page_Range)) +
   coord_polar("y", start = 0) +
   theme_void() +
   theme(legend.position = "bottom") +
-  scale_fill_brewer(palette = "Set3") +
+  #scale_fill_brewer(palette = "Set3") +
+  scale_fill_grey() +
   ggtitle("ページ数の分布")
 
 
+print(pie_chart)
+
+## 尾崎調整---------------
+
+
+# 割合を計算して `Page_Range` に直接追記
+page_count_df <- page_count_df %>%
+  mutate(Page_Range = paste0(Page_Range, " (", sprintf("%.1f%%", Count / sum(Count) * 100), ")"))
+
+pie_chart <- ggplot(page_count_df, aes(x = "", y = Count, fill = Page_Range)) +
+  geom_bar(stat = "identity", width = 1.5, color = "white", size = 1.0) +  # 白線で区切る
+  coord_polar("y", start = 0) +
+  theme_void() +
+  theme(legend.position = "bottom") +
+  scale_fill_manual(values = c("black", "grey20", "grey60", "grey80", "white"))
+
 
 print(pie_chart)
+
+
+
 

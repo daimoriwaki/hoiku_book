@@ -60,7 +60,41 @@ pie_chart <- ggplot(page_count_df, aes(x = "", y = Count, fill = Page_Range)) +
   # geom_text(aes(x = 1.5, y = Label_Position, label = Label), color = "white") +
   # theme(legend.position = "bottom") +
   # labs(title = "文字数の分布", fill = "文字数") +
+  scale_fill_grey() +
   theme(plot.title = element_text(hjust = 0.5)
   )
 
-pie_chart
+print(pie_chart)
+
+## 尾崎調整 ---------------
+library(ggplot2)
+library(dplyr)
+
+# データ例 (適宜変更してください)
+# page_count_df <- data.frame(
+#   Page_Range = c("1-10", "11-20", "21-30", "31-40", "41-50"),
+#   Count = c(15, 30, 10, 25, 20)
+# )
+
+# 割合を計算して `Page_Range` に改行付きで直接追記
+page_count_df <- page_count_df %>%
+  mutate(Page_Range = paste0(Page_Range, "\n(", sprintf("%.1f%%", Count / sum(Count) * 100), ")"))
+
+# 作図
+pie_chart <- ggplot(page_count_df, aes(x = "", y = Count, fill = Page_Range)) +
+  geom_bar(stat = "identity", width = 1.5, color = "white", size = 1.0) +  # 白線で区切る
+  coord_polar("y", start = 0) +
+  theme_void() +
+  theme(
+    legend.position = "bottom",                 # 凡例を下に配置
+    legend.text = element_text(size = 10),      # 凡例の文字サイズ調整
+    legend.key.width = unit(2, "cm"),           # 凡例の幅を調整
+    plot.title = element_text(hjust = 0.5)      # タイトルを中央揃え
+  ) +
+  scale_fill_manual(values = c("black", "grey20", "grey60", "grey80", "grey95")) 
+  #labs(title = "文字数の分布", fill = "文字数")  # タイトルと凡例ラベル
+
+# 表示
+print(pie_chart)
+
+
