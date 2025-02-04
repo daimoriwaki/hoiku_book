@@ -1,6 +1,7 @@
 # load 
 library(ggplot2)
 library(scales) # comma関数を使用するために必要
+library(data.table)
 
 
 

@@ -1,7 +1,7 @@
 # load 
 library(ggplot2)
 library(scales) # comma関数を使用するために必要
-
+library(data.table)
 
 
 script_dir <- dirname(rstudioapi::getActiveDocumentContext()$path)
@@ -100,7 +100,7 @@ ggplot(df, aes(x = 年度)) +
   # Data labels for 就学前人口 (in 万人)
   geom_text(aes(y = 就学前人口,
             label = paste0(round(就学前人口 / 1e4), "万人")),
-            vjust = -1.35, color = "black", size = 4.3, 
+            vjust = -0.8, color = "black", size = 5.4, 
             family = "HiraKakuPro-W3") +
   
   # Bars for 待機児童 (scaled)
@@ -109,15 +109,15 @@ ggplot(df, aes(x = 年度)) +
   
   # Data labels for 待機児童 (in 千人)
   geom_text(aes(y = 待機児童 * scale_factor,
-                label = paste0(round(待機児童 / 1000, 1), "千人")),
-            vjust = -1.1, color = "gray30", size = 4.4, family = "HiraKakuPro-W3") +
+                label = paste0(round(待機児童 / 10000, 1), "万人")),
+            vjust = -1.1, color = "gray30", size = 5.4, family = "HiraKakuPro-W3") +
   
   scale_x_continuous(breaks = c(2010, 2015, 2020, 2024)) +
   # Primary and secondary axes
   scale_y_continuous(
-    name = "就学前人口", 
-    labels = function(x) paste0(round(x / 1e4), "万人"),
-    sec.axis = sec_axis(~ . / scale_factor, name = "待機児童", 
+    name = "就学前人口 (万人)", 
+    labels = function(x) paste0(round(x / 1e4)),
+    sec.axis = sec_axis(~ . / scale_factor, name = "待機児童数 (人)", 
                         labels = scales::comma)
   ) +
   # Remove legends
@@ -126,13 +126,13 @@ ggplot(df, aes(x = 年度)) +
     panel.background = element_rect(fill = "white", color = NA),  # 背景を白に
     plot.background  = element_rect(fill = "white", color = NA),  # プロット領域外も白に
     axis.title.y.left = element_text(color = "black",size = 14),
-    axis.title.y.right = element_text(color = "gray",size = 14),
-    axis.text.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
+    axis.title.y.right = element_text(color = "gray50",size = 14),
+    axis.text.x = element_text(size = 15),
+    axis.text.y = element_text(size = 15),
     axis.title.x = element_text(size = 14),
     legend.position = "none"
   ) +
   # Add title and x-axis label
   labs(x = "年度")
 
-ggsave(file.path(figure_path, "1-1.png"), width = 8, height = 6, dpi = 300)
+## ggsave(file.path(figure_path, "1-1.png"), width = 8, height = 6, dpi = 300)
