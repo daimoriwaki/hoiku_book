@@ -32,7 +32,7 @@ waiting_children_long$月 <- gsub("X", "", waiting_children_long$月)
 month_order <- c("4月",  "5月",  "6月",  "7月",  "8月",  "9月",  "10月", "11月", "12月", "1月",  "2月",  "3月")
 waiting_children_long$月 <- factor(waiting_children_long$月, levels = month_order)
 
-## 尾崎：待機児童比率の追加 ------------
+## 尾崎：待機児童数/入所児童数の追加 ------------
 nyuusho_jidousuu <- waiting_children_long %>%
   filter(項目 == "入所児童数")
 taiki_jidousuu <- waiting_children_long %>%
@@ -40,7 +40,7 @@ taiki_jidousuu <- waiting_children_long %>%
 
 taiki_rate <- as.numeric(taiki_jidousuu$児童数)/as.numeric(nyuusho_jidousuu$児童数) * 100
 taiki_rate_percent <- tibble(
-  項目 = "待機児童比率",
+  項目 = "待機児童数/入所児童数",
   月 = month_order,
   児童数 = taiki_rate
 )
@@ -107,17 +107,17 @@ ggplot(waiting_children_long_adj, aes(x = 月)) +
             aes(y = 児童数, label = 児童数),
             position = position_dodge(width = 0.9),
             vjust = -0.2, size = 4) +
-  # 折れ線グラフ（待機児童比率）
-  geom_line(data = subset(waiting_children_long_adj, 項目 == "待機児童比率"),
+  # 折れ線グラフ（待機児童数/入所児童数）
+  geom_line(data = subset(waiting_children_long_adj, 項目 == "待機児童数/入所児童数"),
             aes(y = (児童数 / 20) * max_child_count, 
-                group = 1, color = "待機児童比率"),
+                group = 1, color = "待機児童数/入所児童数"),
             size = 1.5) +
-  geom_point(data = subset(waiting_children_long_adj, 項目 == "待機児童比率"),
+  geom_point(data = subset(waiting_children_long_adj, 項目 == "待機児童数/入所児童数"),
              aes(y = (児童数 / 20) * max_child_count, 
-                 color = "待機児童比率"),
+                 color = "待機児童数/入所児童数"),
              size = 2) +
   # データラベル（折れ線グラフの真上に配置）
-  geom_text(data = subset(waiting_children_long_adj, 項目 == "待機児童比率"),
+  geom_text(data = subset(waiting_children_long_adj, 項目 == "待機児童数/入所児童数"),
             aes(y = (児童数 / 20) * max_child_count, 
                 label = round(児童数, 1)),  # 小数点1桁まで表示
             vjust = -0.5, color = "black", size = 5) +
@@ -125,7 +125,7 @@ ggplot(waiting_children_long_adj, aes(x = 月)) +
   scale_y_continuous(
     name = "児童数(人)",
     sec.axis = sec_axis(~ . * 20 / max_child_count, 
-                        name = "待機児童比率(%)",
+                        name = "待機児童数/入所児童数(%)",
                         breaks = seq(0, 15, 5))  # 右軸の範囲を0～20に設定
   ) +
   scale_fill_manual(values = c("grey40", "grey75")) +  # 棒グラフの色設定
@@ -137,11 +137,12 @@ ggplot(waiting_children_long_adj, aes(x = 月)) +
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 0, hjust = 0.5, size = 14),  # 横軸の目盛りのフォントサイズ
-    axis.text.y = element_text(size = 14),  # 左Y軸の目盛りのフォントサイズ
-    axis.text.y.right = element_text(size = 16),  # 右Y軸の目盛りのフォントサイズ
+    axis.text.y = element_text(size = 13),  # 左Y軸の目盛りのフォントサイズ
+    axis.text.y.right = element_text(size = 14),  # 右Y軸の目盛りのフォントサイズ
     axis.title.x = element_text(size = 13),  # x軸ラベルのフォントサイズ
     axis.title.y = element_text(size = 13),  # y軸ラベルのフォントサイズ
-    axis.title.y.right = element_text(size = 16),  # 右y軸のラベルのフォントサイズ
+    axis.title.y.right = element_text(size = 13),  # 右y軸のラベルのフォントサイズ
     legend.position = "bottom"
   )
 ggsave("./figure/2_1_adj.png", width = 4.5, height = 3.5, dpi = 300)
+
